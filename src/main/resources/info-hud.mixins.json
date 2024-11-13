@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "dev.wooferz.infohud.mixin",
+	"package": "dev.wooferz.hudlib.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"ExampleMixin"

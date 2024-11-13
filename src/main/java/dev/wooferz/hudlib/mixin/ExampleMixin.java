@@ -1,4 +1,4 @@
-package dev.wooferz.infohud.mixin;
+package dev.wooferz.hudlib.mixin;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;

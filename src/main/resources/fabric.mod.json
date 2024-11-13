@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"dev.wooferz.infohud.InfoHUD"
+			"dev.wooferz.hudlib.InfoHUD"
 		],
 		"client": [
-			"dev.wooferz.infohud.InfoHUDClient"
+			"dev.wooferz.hudlib.InfoHUDClient"
 		]
 	},
 	"mixins": [
