@@ -23,7 +23,7 @@ public class ConfigManager {
     }
 
     public Path fileLocation() {
-        return FabricLoader.getInstance().getConfigDir().resolve("configFile-infohud.json5");
+        return FabricLoader.getInstance().getConfigDir().resolve("hudlib-base.json5");
     }
 
     public void read() {

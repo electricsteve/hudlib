@@ -1,6 +1,13 @@
 package dev.wooferz.hudlib.hud;
 
+import dev.isxander.yacl3.api.ConfigCategory;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.OptionDescription;
+import dev.isxander.yacl3.api.OptionGroup;
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import dev.wooferz.hudlib.HudAnchor;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 
 public abstract class HUDElement {
 
@@ -10,23 +17,25 @@ public abstract class HUDElement {
     public int defaultHeight;
     public int padding;
     public String identifier;
+    public String displayName;
     public boolean renderAnyway = false;
-    public boolean defaultAnchorRight;
-    public boolean defaultAnchorBottom;
+    public HudAnchor.HorizontalAnchor defaultHorizontalAnchor;
+    public HudAnchor.VerticalAnchor defaultVerticalAnchor;
 
-    public HUDElement(int defaultX, int defaultY, int defaultWidth, int defaultHeight, int padding, String modid, String identifier, boolean defaultAnchorRight, boolean defaultAnchorBottom) {
+    public HUDElement(String displayName, int defaultX, int defaultY, int defaultWidth, int defaultHeight, int padding, String modid, String identifier, HudAnchor.HorizontalAnchor defaultHorizontalAnchor, HudAnchor.VerticalAnchor defaultVerticalAnchor) {
         this.defaultX = defaultX;
         this.defaultY = defaultY;
         this.defaultWidth = defaultWidth;
         this.defaultHeight = defaultHeight;
         this.padding = padding;
         this.identifier = modid + ":" + identifier;
-        this.defaultAnchorRight = defaultAnchorRight;
-        this.defaultAnchorBottom = defaultAnchorBottom;
+        this.defaultHorizontalAnchor = defaultHorizontalAnchor;
+        this.defaultVerticalAnchor = defaultVerticalAnchor;
+        this.displayName = displayName;
     }
 
-    public HUDElement(int defaultX, int defaultY, int defaultWidth, int defaultHeight, int padding, String modid, String identifier) {
-        this(defaultX, defaultY, defaultWidth, defaultHeight, padding, modid, identifier, false, false);
+    public HUDElement(String displayName, int defaultX, int defaultY, int defaultWidth, int defaultHeight, int padding, String modid, String identifier) {
+        this(displayName, defaultX, defaultY, defaultWidth, defaultHeight, padding, modid, identifier, HudAnchor.HorizontalAnchor.LEFT, HudAnchor.VerticalAnchor.TOP);
     }
 
     public boolean canResize() {
@@ -34,6 +43,22 @@ public abstract class HUDElement {
     }
 
     public abstract void render(int x, int y, int width, int height, DrawContext context, float tickDelta);
+
+    public void setConfig(HUDConfig config) {
+
+    }
+    public HUDConfig getConfig() {
+        return null;
+    }
+    public Class<?> getConfigType() {
+        return HUDConfig.class;
+    }
+
+    public OptionGroup generateConfig() {
+
+        return null;
+
+    }
 
     public void onDisable() {
 

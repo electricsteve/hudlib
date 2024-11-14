@@ -18,8 +18,16 @@ repositories {
 	// for more information about repositories.
 	mavenCentral()
 
-	maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
-
+	repositories {
+		maven {
+			name = "Terraformers"
+			url = "https://maven.terraformersmc.com/"
+		}
+	}
+	maven {
+		name 'Xander Maven'
+		url 'https://maven.isxander.dev/releases'
+	}
 }
 
 loom {
@@ -42,8 +50,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 
-	modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}")
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 }
 
@@ -57,6 +66,14 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
 	it.options.release = 17
+}
+tasks.withType(JavaExec).configureEach {
+	jvmArgs += [
+			'--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+			'--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED',
+			'--add-opens', 'java.desktop/java.awt=ALL-UNNAMED',
+			'--add-opens', 'java.base/java.util=ALL-UNNAMED'
+	]
 }
 
 java {

@@ -1,18 +1,18 @@
 {
 	"schemaVersion": 1,
-	"id": "info-hud",
+	"id": "hudlib",
 	"version": "${version}",
-	"name": "Info HUD",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "HUD Lib",
+	"description": "This mod gives developers a way to easily make HUD Elements with easy editor for users.",
 	"authors": [
-		"Me!"
+		"Wooferz"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/project/hud-lib",
+		"sources": "https://github.com/woooferz/hudlib"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/info-hud/icon.png",
+	"license": "MIT",
+	"icon": "assets/hudlib/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"dev.wooferz.hudlib.InfoHUDClient"
+		],
+		"modmenu": [
+			"dev.wooferz.hudlib.ModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -34,8 +37,6 @@
 		"minecraft": "~1.20.1",
 		"java": ">=17",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
+
 }

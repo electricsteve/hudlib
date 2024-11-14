@@ -12,7 +12,7 @@ import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.text.Text;
-
+import static dev.wooferz.hudlib.InfoHUDClient.LOGGER;
 
 public class DraggableWidget extends ClickableWidget {
 
@@ -24,8 +24,10 @@ public class DraggableWidget extends ClickableWidget {
     Boolean enabled;
     boolean pressed = false;
     boolean resizing = false;
+    EditScreen screen;
+    //float scale = 0.5f;
 
-    public DraggableWidget(int x, int y, int width, int height, Boolean enabled, HUDElement element) {
+    public DraggableWidget(int x, int y, int width, int height, Boolean enabled, HUDElement element, EditScreen screen) {
         super(x - element.padding, y - element.padding, width + (element.padding * 2), height + (element.padding * 2), Text.empty());
         this.realX = (double) x;
         this.realY = (double) y;
@@ -33,6 +35,7 @@ public class DraggableWidget extends ClickableWidget {
         this.realHeight = (double) height;
         this.element = element;
         this.enabled = enabled;
+        this.screen = screen;
     }
 
     @Override
@@ -60,10 +63,9 @@ public class DraggableWidget extends ClickableWidget {
     @Override
     public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
 
-        Screen window = MinecraftClient.getInstance().currentScreen;
-        if (window == null) return;
-        int width = window.width;
-        int height = window.height;
+        Window window = MinecraftClient.getInstance().getWindow();
+        int wwidth = window.getScaledWidth();
+        int wheight = window.getScaledHeight();
 
         if (resizing) {
             this.realWidth += deltaX;
@@ -82,11 +84,11 @@ public class DraggableWidget extends ClickableWidget {
             this.realX += deltaX;
             this.realY += deltaY;
 
-            if (this.realX + this.realWidth > width) {
-                this.realX = width - this.realWidth;
+            if (this.realX + this.realWidth > wwidth) {
+                this.realX = wwidth - this.realWidth;
             }
-            if (this.realY + this.realHeight > height) {
-                this.realY = height - this.realHeight;
+            if (this.realY + this.realHeight > wheight) {
+                this.realY = wheight - this.realHeight;
             }
             if (this.realX < 0) {
                 this.realX = 0;
@@ -95,14 +97,28 @@ public class DraggableWidget extends ClickableWidget {
                 this.realY = 0;
             }
 
-            setX((int) realX);
-            setY((int) realY);
+            int snappedX = (int) realX;
+            int snappedY = (int) realY;
+
+           // LOGGER.info(String.valueOf((snappedX + snappedX + width) / 2));
+           // LOGGER.info(String.valueOf(wwidth));
+            if (!screen.isCtrlHeld) {
+                if (Math.abs(((snappedX + snappedX + width) / 2) - (wwidth / 2)) < 10) {
+                    snappedX = (wwidth / 2) - (width / 2);
+                }
+                if (Math.abs(((snappedY + snappedY + height) / 2) - (wheight / 2)) < 10) {
+                    snappedY = (wheight / 2) - (height / 2);
+                }
+            }
+
+            setX(snappedX);
+            setY(snappedY);
 
         }
         pressed = false;
 
         Rect2i position = getRect();
-        Rect2i fixedPosition = HudManager.hudAnchors.get(element.identifier).convert(position);
+        Rect2i fixedPosition = HudManager.hudAnchors.get(element.identifier).convertBack(position);
 
 
         HudManager.hudPositions.put(element.identifier, fixedPosition);
@@ -142,17 +158,25 @@ public class DraggableWidget extends ClickableWidget {
             Window window = MinecraftClient.getInstance().getWindow();
             int centerX = (getWidth() + getX() + getX()) / 2;
             int centerY = (getHeight() + getY() + getY()) / 2;
-            if (centerX < (window.getScaledWidth() / 2)) {
-                anchor.rightAnchor = false;
+            int width = window.getScaledWidth();
+            int height = window.getScaledHeight();
+
+
+            if (centerX < (width / 3)) {
+                anchor.horizontalAnchor = HudAnchor.HorizontalAnchor.LEFT;
+            } else if (centerX < (2 * width / 3)) {
+                anchor.horizontalAnchor = HudAnchor.HorizontalAnchor.CENTER;
             } else {
-                anchor.rightAnchor = true;
+                anchor.horizontalAnchor = HudAnchor.HorizontalAnchor.RIGHT;
             }
-            if (centerY < (window.getScaledHeight() /2)) {
-                anchor.bottomAnchor = false;
+            if (centerY < (height / 3)) {
+                anchor.verticalAnchor = HudAnchor.VerticalAnchor.TOP;
+            } else if (centerY < (2 * height / 3)) {
+                anchor.verticalAnchor = HudAnchor.VerticalAnchor.MIDDLE;
             } else {
-                anchor.bottomAnchor = true;
+                anchor.verticalAnchor = HudAnchor.VerticalAnchor.BOTTOM;
             }
-            HudManager.hudPositions.put(element.identifier, anchor.convert(getRect()));
+            HudManager.hudPositions.put(element.identifier, anchor.convertBack(getRect()));
         }
         super.onRelease(mouseX, mouseY);
     }

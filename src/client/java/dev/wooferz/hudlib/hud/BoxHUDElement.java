@@ -6,7 +6,7 @@ import net.minecraft.client.gui.DrawContext;
 public class BoxHUDElement extends HUDElement{
 
     public BoxHUDElement(int defaultX, int defaultY, int defaultWidth, int defaultHeight, int padding) {
-        super(defaultX, defaultY, defaultWidth, defaultHeight, padding, InfoHUDClient.MOD_ID, "box-hud");
+        super("Box Display", defaultX, defaultY, defaultWidth, defaultHeight, padding, InfoHUDClient.MOD_ID, "box-hud");
     }
 
     @Override
