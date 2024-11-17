@@ -10,7 +10,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.text.Text;
-import static dev.wooferz.hudlib.InfoHUDClient.LOGGER;
 import net.minecraft.client.util.Window;
 
 public class EditScreen extends Screen {
@@ -36,13 +35,27 @@ public class EditScreen extends Screen {
 
         for (int i = 0; i < HudManager.hudElements.size(); i++) {
             HUDElement element = HudManager.hudElements.get(i);
-            Rect2i unanchoredPosition = HudManager.hudPositions.get(element.identifier);
+            if (!HudManager.hudEnabled.get(element.identifier)) {
+                continue;
+            }
+            Rect2i unanchoredPosition = HudManager.hudPositions.get(element.identifier); // Unanchored position is refering to that its not anchored to top left
             Rect2i position = HudManager.hudAnchors.get(element.identifier).convert(unanchoredPosition);
 
             element.renderAnyway = true;
 
-            DraggableWidget elementMover = new DraggableWidget(position.getX(), position.getY(), position.getWidth(), position.getHeight(), HudManager.hudEnabled.get(element.identifier), element, this);
+            int width = position.getWidth();
+            int height = position.getHeight();
+            if (element.getWidth() != null) {
+                width = element.getWidth();
+            }
+            if (element.getHeight() != null) {
+                height = element.getHeight();
+            }
+
+            DraggableWidget elementMover = new DraggableWidget(position.getX(), position.getY(), width, height, HudManager.hudShown.get(element.identifier), element, this);
             this.addDrawableChild(elementMover);
+            element.editorOpened();
+
         }
 
 
@@ -90,14 +103,9 @@ public class EditScreen extends Screen {
             HUDElement element = HudManager.hudElements.get(i);
 
             element.renderAnyway = false;
+            element.editorClosed();
 
-            ConfigElementInformation information = new ConfigElementInformation();
-            information.enabled = HudManager.hudEnabled.get(element.identifier);
-            information.position = HudManager.hudPositions.get(element.identifier);
-            information.anchor = HudManager.hudAnchors.get(element.identifier);
-
-            ConfigManager.getInstance().config.saveElement(element.identifier, information);
-            ConfigManager.getInstance().saveConfig();
+            HudManager.saveElementBaseConfig(element);
 
         }
         super.close();

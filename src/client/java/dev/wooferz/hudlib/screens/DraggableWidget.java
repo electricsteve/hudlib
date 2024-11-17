@@ -5,14 +5,12 @@ import dev.wooferz.hudlib.HudManager;
 import dev.wooferz.hudlib.hud.HUDElement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.text.Text;
-import static dev.wooferz.hudlib.InfoHUDClient.LOGGER;
 
 public class DraggableWidget extends ClickableWidget {
 
@@ -128,6 +126,7 @@ public class DraggableWidget extends ClickableWidget {
         return new Rect2i(this.getX() + element.padding, this.getY() + element.padding, this.getWidth() - (element.padding * 2), this.getHeight() - (element.padding * 2));
     }
 
+
     @Override
     public void playDownSound(SoundManager soundManager) {
 
@@ -151,7 +150,7 @@ public class DraggableWidget extends ClickableWidget {
             } else {
                 element.onDisable();
             }
-            HudManager.hudEnabled.put(element.identifier, enabled);
+            HudManager.hudShown.put(element.identifier, enabled);
         }
         if (!pressed && !resizing) {
             HudAnchor anchor = HudManager.hudAnchors.get(element.identifier);

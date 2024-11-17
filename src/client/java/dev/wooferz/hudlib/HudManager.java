@@ -1,15 +1,9 @@
 package dev.wooferz.hudlib;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.isxander.yacl3.api.ConfigCategory;
-import dev.isxander.yacl3.api.OptionGroup;
-import dev.isxander.yacl3.api.YetAnotherConfigLib;
-import dev.wooferz.hudlib.config.ColorTypeAdapter;
-import dev.wooferz.hudlib.config.Config;
-import dev.wooferz.hudlib.config.ConfigManager;
-import dev.wooferz.hudlib.config.ElementConfig;
+import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import dev.wooferz.hudlib.config.*;
 import dev.wooferz.hudlib.hud.HUDConfig;
 import dev.wooferz.hudlib.hud.HUDElement;
 import dev.wooferz.hudlib.screens.EditScreen;
@@ -20,6 +14,8 @@ import net.minecraft.text.Text;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 import static dev.wooferz.hudlib.InfoHUDClient.openEditorKey;
@@ -33,8 +29,10 @@ public class HudManager {
 
     public static ArrayList<HUDElement> hudElements = new ArrayList<HUDElement>();
     public static HashMap<String, Rect2i> hudPositions = new HashMap<String, Rect2i>();
-    public static HashMap<String, Boolean> hudEnabled = new HashMap<String, Boolean>();
+    public static HashMap<String, Boolean> hudShown = new HashMap<String, Boolean>();
+    public static HashMap<String, Boolean> hudEnabled = new HashMap<>();
     public static HashMap<String, HudAnchor> hudAnchors = new HashMap<String, HudAnchor>();
+
 
     public static boolean isElementsConfigLoaded = false;
 
@@ -60,7 +58,7 @@ public class HudManager {
 
         for (int i = 0; i < hudElements.size(); i++) {
             HUDElement element = hudElements.get(i);
-            if (hudEnabled.get(element.identifier) || MinecraftClient.getInstance().currentScreen instanceof EditScreen) {
+            if ((hudShown.get(element.identifier) || MinecraftClient.getInstance().currentScreen instanceof EditScreen) && hudEnabled.get(element.identifier)) {
                 Rect2i positionUnanchored = hudPositions.get(element.identifier);
                 Rect2i position = hudAnchors.get(element.identifier).convert(positionUnanchored);
                 element.render(position.getX(), position.getY(), position.getWidth(), position.getHeight(), context, tickDelta);
@@ -78,8 +76,10 @@ public class HudManager {
         hudElements.add(hudElement);
         Config config = ConfigManager.getInstance().config;
         Rect2i position;
-        boolean enabled = true;
+        boolean shown = true;
         HudAnchor anchor = null;
+        boolean enabled = true;
+
         if (config.getElement(hudElement.identifier) != null) {
             position = config.getElement(hudElement.identifier).position;
             if (!hudElement.canResize()) {
@@ -90,6 +90,7 @@ public class HudManager {
                 anchor = config.getElement(hudElement.identifier).anchor;
             }
             enabled = config.getElement(hudElement.identifier).enabled;
+            shown = config.getElement(hudElement.identifier).shown;
         } else {
             position = new Rect2i(hudElement.defaultX, hudElement.defaultY, hudElement.defaultWidth, hudElement.defaultHeight);
         }
@@ -97,8 +98,9 @@ public class HudManager {
             anchor = new HudAnchor(hudElement.defaultHorizontalAnchor, hudElement.defaultVerticalAnchor);
         }
         hudPositions.put(hudElement.identifier, position);
-        hudEnabled.put(hudElement.identifier, enabled);
+        hudShown.put(hudElement.identifier, shown);
         hudAnchors.put(hudElement.identifier, anchor);
+        hudEnabled.put(hudElement.identifier, enabled);
 
         if (!isElementsConfigLoaded) {
             ElementConfig.HANDLER.load();
@@ -109,6 +111,8 @@ public class HudManager {
         String elementConfigString = ElementConfig.HANDLER.instance().elementConfigs.get(hudElement.identifier);
         HUDConfig elementConfig = (HUDConfig) gson.fromJson(elementConfigString, hudElement.getConfigType());
         hudElement.setConfig(elementConfig);
+
+        Collections.sort(hudElements);
 
         LOGGER.info("Successfully registered " + hudElement.displayName + ".");
 
@@ -127,5 +131,54 @@ public class HudManager {
         }
 
         ElementConfig.HANDLER.save();
+    }
+
+    public static void addGenericConfigOptions(ConfigCategory.Builder genericHudOptions) {
+        for (int i = 0; i < hudElements.size(); i++) {
+            HUDElement element = hudElements.get(i);
+            OptionGroup optionGroup = OptionGroup.createBuilder()
+                    .name(Text.of(element.displayName))
+                    .option(
+                            Option.<Boolean>createBuilder()
+                                    .name(Text.of("Enabled"))
+                                    .description(OptionDescription.of(Text.of("Turning this off will remove it from the editor.")))
+                                    .binding(
+                                            true,
+                                            () -> hudEnabled.get(element.identifier),
+                                            value -> {
+                                                hudEnabled.put(element.identifier, value);
+                                                saveElementBaseConfig(element);
+                                            }
+
+                                    )
+                                    .controller(TickBoxControllerBuilder::create)
+                                    .build()
+                    )
+                    .option(
+                            ButtonOption.createBuilder()
+                                    .name(Text.of("Reset Position"))
+                                    .description(OptionDescription.of(Text.of("This will reset its position on the screen to its default.")))
+                                    .action(((yaclScreen, buttonOption) -> {
+                                        Rect2i position = new Rect2i(element.defaultX, element.defaultY, element.defaultWidth, element.defaultHeight);
+                                        HudAnchor anchor = new HudAnchor(element.defaultHorizontalAnchor, element.defaultVerticalAnchor);
+                                        hudPositions.put(element.identifier, position);
+                                        hudAnchors.put(element.identifier, anchor);
+                                    }))
+                                    .build()
+                    )
+                    .build();
+            genericHudOptions.group(optionGroup);
+        }
+    }
+
+    public static void saveElementBaseConfig(HUDElement element) {
+        ConfigElementInformation information = new ConfigElementInformation();
+        information.shown = HudManager.hudShown.get(element.identifier);
+        information.position = HudManager.hudPositions.get(element.identifier);
+        information.anchor = HudManager.hudAnchors.get(element.identifier);
+        information.enabled = HudManager.hudEnabled.get(element.identifier);
+
+        ConfigManager.getInstance().config.saveElement(element.identifier, information);
+        ConfigManager.getInstance().saveConfig();
     }
 }

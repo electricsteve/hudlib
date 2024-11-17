@@ -6,10 +6,12 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.wooferz.hudlib.HudAnchor;
+import dev.wooferz.hudlib.screens.DraggableWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class HUDElement {
+public abstract class HUDElement implements Comparable<HUDElement> {
 
     public int defaultX;
     public int defaultY;
@@ -67,5 +69,24 @@ public abstract class HUDElement {
 
     }
 
+    @Override
+    public int compareTo(@NotNull HUDElement o) {
+        return this.identifier.compareTo(o.identifier);
+    }
 
+
+    public void editorOpened() {
+
+    }
+
+    public void editorClosed() {
+
+    }
+
+    public Integer getWidth() {
+        return null;
+    }
+    public Integer getHeight() {
+        return null;
+    }
 }

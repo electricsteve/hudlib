@@ -5,8 +5,12 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
+import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import dev.isxander.yacl3.impl.controller.TickBoxControllerBuilderImpl;
 import dev.wooferz.hudlib.HudAnchor;
 import dev.wooferz.hudlib.InfoHUD;
+import dev.wooferz.hudlib.screens.DraggableWidget;
+import dev.wooferz.hudlib.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -29,16 +33,25 @@ public class ExampleHUDElement extends HUDElement{
 
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        String text = String.valueOf(MinecraftClient.getInstance().getCurrentFps()) + " FPS";
+
+        int currentFPS = MinecraftClient.getInstance().getCurrentFps();
+
+
+        String text = String.valueOf(currentFPS) + " FPS";
 
         int argb = (config.bgColor.getAlpha() << 24) | (config.bgColor.getRed() << 16) | (config.bgColor.getGreen() << 8) | config.bgColor.getBlue();
         context.fill(x, y, x + width, y + 9 + (padding * 2), argb);
 
 
 
-        context.drawCenteredTextWithShadow(textRenderer, text, (width/2)+x, y + padding + 1, config.color.getRGB());
+        //context.drawCenteredTextWithShadow(textRenderer, text, (width/2)+x, y + padding + 1, config.color.getRGB());
+
+        TextUtils.drawText(context, textRenderer, text, (width/2)+x, y + padding + 1, config.color.getRGB(), true, true, config.chroma);
+
 
     }
+
+
 
     @Override
     public void setConfig(HUDConfig x) {
@@ -80,7 +93,17 @@ public class ExampleHUDElement extends HUDElement{
                                 .allowAlpha(true))
                         .build()
                 )
+                .option(Option.<Boolean>createBuilder()
+                        .name(Text.of("Chroma"))
+                        .binding(false,
+                                () -> config.chroma,
+                                newValue -> config.chroma = newValue)
+                        .controller(TickBoxControllerBuilder::create)
+                        .build()
+                )
                 .build();
         return optionGroup;
     }
+
+
 }
