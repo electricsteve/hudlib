@@ -1,14 +1,8 @@
 package dev.wooferz.hudlib.hud;
 
-import dev.isxander.yacl3.api.ConfigCategory;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
-import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.wooferz.hudlib.HudAnchor;
-import dev.wooferz.hudlib.screens.DraggableWidget;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class HUDElement implements Comparable<HUDElement> {

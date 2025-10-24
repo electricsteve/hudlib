@@ -1,15 +1,11 @@
 package dev.wooferz.hudlib.hud;
 
-import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
-import dev.isxander.yacl3.impl.controller.TickBoxControllerBuilderImpl;
 import dev.wooferz.hudlib.HudAnchor;
 import dev.wooferz.hudlib.InfoHUD;
-import dev.wooferz.hudlib.screens.DraggableWidget;
 import dev.wooferz.hudlib.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -17,7 +13,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 
 import java.awt.*;
-import static dev.wooferz.hudlib.InfoHUDClient.LOGGER;
 
 public class ExampleHUDElement extends HUDElement{
 
