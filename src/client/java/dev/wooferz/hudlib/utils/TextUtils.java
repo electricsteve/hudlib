@@ -4,7 +4,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 
 import java.awt.*;
-import static dev.wooferz.hudlib.InfoHUDClient.LOGGER;
 
 public class TextUtils {
 

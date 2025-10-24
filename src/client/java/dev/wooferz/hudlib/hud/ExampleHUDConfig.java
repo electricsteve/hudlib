@@ -1,7 +1,5 @@
 package dev.wooferz.hudlib.hud;
 
-import net.minecraft.client.util.math.Rect2i;
-
 import java.awt.*;
 
 public class ExampleHUDConfig extends HUDConfig {

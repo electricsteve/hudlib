@@ -2,8 +2,6 @@ package dev.wooferz.hudlib.screens;
 
 import dev.wooferz.hudlib.HudManager;
 import dev.wooferz.hudlib.ModMenuIntegration;
-import dev.wooferz.hudlib.config.ConfigElementInformation;
-import dev.wooferz.hudlib.config.ConfigManager;
 import dev.wooferz.hudlib.hud.HUDElement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;

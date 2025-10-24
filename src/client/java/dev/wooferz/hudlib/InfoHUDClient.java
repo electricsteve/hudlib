@@ -1,7 +1,5 @@
 package dev.wooferz.hudlib;
 
-import dev.isxander.yacl3.api.*;
-import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.wooferz.hudlib.config.ConfigManager;
 import dev.wooferz.hudlib.config.ElementConfig;
 import dev.wooferz.hudlib.hud.BoxHUDElement;
@@ -10,11 +8,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
 import org.slf4j.LoggerFactory;
 
 public class InfoHUDClient implements ClientModInitializer {

@@ -1,9 +1,7 @@
 package dev.wooferz.hudlib;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Rect2i;
 
 
