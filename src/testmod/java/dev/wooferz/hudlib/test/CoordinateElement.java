@@ -1,4 +1,4 @@
-package dev.wooferz.hudlib.test.element;
+package dev.wooferz.hudlib.test;
 
 import dev.wooferz.hudlib.HudAnchor;
 import net.minecraft.client.MinecraftClient;

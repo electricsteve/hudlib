@@ -1,4 +1,6 @@
-package dev.wooferz.hudlib.hud;
+package dev.wooferz.hudlib.test;
+
+import dev.wooferz.hudlib.hud.HUDConfig;
 
 import java.awt.*;
 

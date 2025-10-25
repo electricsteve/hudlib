@@ -3,7 +3,6 @@ package dev.wooferz.hudlib;
 import dev.wooferz.hudlib.config.ConfigManager;
 import dev.wooferz.hudlib.config.ElementConfig;
 import dev.wooferz.hudlib.hud.BoxHUDElement;
-import dev.wooferz.hudlib.hud.ExampleHUDElement;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -36,8 +35,6 @@ public class HudLibClient implements ClientModInitializer {
 
 		ConfigManager.getInstance().read();
 
-		ExampleHUDElement exampleHUDElement = new ExampleHUDElement(5, 5, 55, 17, 1);
-		HudManager.registerHudElement(exampleHUDElement);
 		BoxHUDElement boxHUDElement = new BoxHUDElement(15, 5, 10, 10, 1);
 		//HudManager.registerHudElement(boxHUDElement);
 	}
