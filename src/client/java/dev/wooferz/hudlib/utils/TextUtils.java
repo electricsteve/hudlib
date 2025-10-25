@@ -32,7 +32,7 @@ public class TextUtils {
 
             String tmp = String.valueOf(c);
             context.drawText(textRenderer, tmp, rx, y, i, drawShadow);
-            rx += (int) textRenderer.getWidth(tmp);
+            rx += textRenderer.getWidth(tmp);
         }
 
     }

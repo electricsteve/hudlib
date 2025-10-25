@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import java.util.HashMap;
 
 public class ElementConfig {
-    public static ConfigClassHandler<ElementConfig> HANDLER = ConfigClassHandler.createBuilder(ElementConfig.class)
+    public static final ConfigClassHandler<ElementConfig> HANDLER = ConfigClassHandler.createBuilder(ElementConfig.class)
             .id(new Identifier("hudlib", "element_config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve("hudlib-elements.json5"))
@@ -20,5 +20,5 @@ public class ElementConfig {
             .build();
 
     @SerialEntry
-    public HashMap<String, String> elementConfigs = new HashMap<>();
+    public final HashMap<String, String> elementConfigs = new HashMap<>();
 }

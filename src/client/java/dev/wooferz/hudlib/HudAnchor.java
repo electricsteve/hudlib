@@ -4,8 +4,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.Rect2i;
 
-
-
 public class HudAnchor {
 
     public enum HorizontalAnchor {
@@ -19,8 +17,8 @@ public class HudAnchor {
         BOTTOM
     }
 
-    public HorizontalAnchor horizontalAnchor = HorizontalAnchor.LEFT;
-    public VerticalAnchor verticalAnchor = VerticalAnchor.TOP;
+    public HorizontalAnchor horizontalAnchor;
+    public VerticalAnchor verticalAnchor;
 
     public HudAnchor(HorizontalAnchor horizontalAnchor, VerticalAnchor verticalAnchor) {
         this.horizontalAnchor = horizontalAnchor;

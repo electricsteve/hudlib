@@ -26,7 +26,6 @@ public class EditScreen extends Screen {
 
         settingsButton = ButtonWidget.builder(Text.of("Settings"), (btn) -> {
             minecraftClient.setScreen(ModMenuIntegration.finishScreen(minecraftClient.currentScreen));
-
         }).dimensions(window.getScaledWidth() / 2 - 60, window.getScaledHeight() / 2 - 10, 120, 20).build();
         this.addDrawableChild(settingsButton);
 
@@ -36,7 +35,7 @@ public class EditScreen extends Screen {
             if (!HudManager.hudEnabled.get(element.identifier)) {
                 continue;
             }
-            Rect2i unanchoredPosition = HudManager.hudPositions.get(element.identifier); // Unanchored position is refering to that its not anchored to top left
+            Rect2i unanchoredPosition = HudManager.hudPositions.get(element.identifier); // Unanchored position is referring to that it's not anchored to top left
             Rect2i position = HudManager.hudAnchors.get(element.identifier).convert(unanchoredPosition);
 
             element.renderAnyway = true;
@@ -55,12 +54,6 @@ public class EditScreen extends Screen {
             element.editorOpened();
 
         }
-
-
-
-
-
-
     }
 
     @Override

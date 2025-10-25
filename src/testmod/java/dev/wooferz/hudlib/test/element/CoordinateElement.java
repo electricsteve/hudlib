@@ -20,9 +20,9 @@ public class CoordinateElement extends BaseTextElement{
             return;
         }
 
-        renderText("X: " + String.valueOf((int) player.getX()), i, i1, i2, i3, drawContext, v, false, 5);
-        renderText("Y: " + String.valueOf((int) player.getY()), i, i1 + 17, i2, i3, drawContext, v, false, 5);
-        renderText("Z: " + String.valueOf((int) player.getZ()), i , i1 + 17 + 17, i2, i3, drawContext, v, false, 5);
+        renderText("X: " + (int) player.getX(), i, i1, i2, i3, drawContext, v, false, 5);
+        renderText("Y: " + (int) player.getY(), i, i1 + 17, i2, i3, drawContext, v, false, 5);
+        renderText("Z: " + (int) player.getZ(), i , i1 + 17 + 17, i2, i3, drawContext, v, false, 5);
 
 
 
@@ -48,7 +48,7 @@ public class CoordinateElement extends BaseTextElement{
 
         int maxCoordLength = Math.max(Math.max(xLength, yLength), zLength);
         if (maxCoordLength > 6) {
-            extraWidth = (maxCoordLength - 6) * mc.textRenderer.getWidth(String.valueOf("0")) + 5;
+            extraWidth = (maxCoordLength - 6) * mc.textRenderer.getWidth("0") + 5;
         }
 
         return normalWidth + extraWidth;

@@ -87,7 +87,7 @@ public class BaseTextElement extends HUDElement {
 
     @Override
     public OptionGroup generateConfig() {
-        OptionGroup optionGroup = OptionGroup.createBuilder()
+        return OptionGroup.createBuilder()
                 .name(Text.of(displayName))
                 .option(Option.<Color>createBuilder()
                         .name(Text.of("Text Color"))
@@ -118,7 +118,5 @@ public class BaseTextElement extends HUDElement {
                                 .build()
                 )
                 .build();
-
-        return optionGroup;
     }
 }

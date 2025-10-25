@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static dev.wooferz.hudlib.InfoHUDClient.openEditorKey;
-import static dev.wooferz.hudlib.InfoHUDClient.LOGGER;
+import static dev.wooferz.hudlib.HudLibClient.openEditorKey;
+import static dev.wooferz.hudlib.HudLibClient.LOGGER;
 
 public class HudManager {
 
@@ -113,8 +113,7 @@ public class HudManager {
 
         Collections.sort(hudElements);
 
-        LOGGER.info("Successfully registered " + hudElement.displayName + ".");
-
+        LOGGER.info("Successfully registered {}.", hudElement.displayName);
     }
 
     public static void saveConfig() {
