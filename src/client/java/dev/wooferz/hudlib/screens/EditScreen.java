@@ -106,4 +106,9 @@ public class EditScreen extends Screen {
     public boolean shouldPause() {
         return false;
     }
+
+    // Remove menu background blur
+    @Override
+    protected void applyBlur(float delta) {
+    }
 }
